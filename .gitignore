@@ -11,3 +11,4 @@
 /pkg/linux_amd64/vm.a
 /src/main/main_test.go
 /src/main/src/main
+.goat
