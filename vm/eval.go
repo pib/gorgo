@@ -171,9 +171,9 @@ func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 				code.runtimeError("Stackitem cannot be nil.")
 			}
 			//fmt.Printf("Item: %v\n", stackitem)
-			fmt.Printf("%s ", *stackitem.asString())
+			fmt.Fprintf(code.vm.Stdout, "%s ", *stackitem.asString())
 		case PRINT_NEWLINE:
-			fmt.Println()
+			fmt.Fprintln(code.vm.Stdout)
 			code.log("Print newline", true)
 		case UNPACK_SEQUENCE:
 			code.log("Unpack sequence", true)

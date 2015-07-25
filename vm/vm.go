@@ -2,8 +2,10 @@ package vm
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
+	"os"
 	"sync"
 	"time"
 )
@@ -20,6 +22,7 @@ type Runtime struct {
 }
 
 type VM struct {
+	Stdout           io.Writer
 	filename         string
 	debug            bool
 	content          *codeReader
@@ -89,6 +92,7 @@ func NewVM(filename string, debug bool) (*VM, error) {
 	}
 
 	vm := &VM{
+		Stdout:   os.Stdout,
 		content:  NewCodeReader(content),
 		filename: filename,
 		debug:    debug,
