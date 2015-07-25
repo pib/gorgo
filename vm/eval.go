@@ -3,7 +3,6 @@ package vm
 import (
 	"fmt"
 	"io"
-	"time"
 )
 
 const (
@@ -56,11 +55,6 @@ const (
 func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 	frame.position = 0 // Start from the beginning on eval!
 
-	starttime := time.Now()
-	defer func() {
-		code.log(fmt.Sprintf("Evaluation took %s.", time.Since(starttime)), true)
-	}()
-
 	for {
 		// Get opcode
 		op_position := frame.position
@@ -75,7 +69,6 @@ func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 			}
 		}
 		frame.position += 1
-		code.vm.runtime.instructions += 1
 
 		// Has opcode arguments?
 		var oparg uint16
@@ -209,7 +202,7 @@ func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 			} else {
 				// It's no built-in, determine value
 
-				_, global_found := code.vm.runtime.mainframe.names[name]
+				_, global_found := code.vm.mainframe.names[name]
 
 				// TODO CHECK: Not sure whether to give global or local priority
 				if global_found {
@@ -229,7 +222,7 @@ func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 		case STORE_NAME:
 			name := *code.names.(*PyTuple).items[int(oparg)].getValue().(*string)
 
-			_, global_found := code.vm.runtime.mainframe.names[name]
+			_, global_found := code.vm.mainframe.names[name]
 
 			// TODO CHECK: Not sure whether to give global or local priority
 			if global_found {
@@ -329,7 +322,7 @@ func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 				frame.stack.Push(value)
 			} else {
 				// It's no built-in, determine value
-				value, global_found := code.vm.runtime.mainframe.names[name]
+				value, global_found := code.vm.mainframe.names[name]
 
 				// TODO CHECK: Not sure whether to give global or local priority
 				if !global_found {
@@ -441,7 +434,7 @@ func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 		case LOAD_DEREF:
 			panic("Check for correct implementation")
 			code.log(fmt.Sprintf("Load deref (idx = %d)", oparg), true)
-			obj := code.vm.runtime.freevars[int(oparg)]
+			obj := code.vm.freevars[int(oparg)]
 			if obj == nil {
 				code.runtimeError("Received freevar was nil")
 			}
@@ -450,7 +443,7 @@ func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 			panic("Check for correct implementation")
 			code.log(fmt.Sprintf("Store deref (idx = %d)", oparg), true)
 			obj := frame.stack.Pop()
-			code.vm.runtime.freevars[int(oparg)] = obj
+			code.vm.freevars[int(oparg)] = obj
 		default:
 			code.runtimeError(fmt.Sprintf("!!! Unhandled opcode: %c (%d)", opcode, opcode))
 		}
