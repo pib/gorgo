@@ -5,10 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/pib/gorgo/src/vm"
-
-	"os"
-	"runtime/pprof"
+	"github.com/pib/gorgo/vm"
 )
 
 const (
@@ -19,15 +16,6 @@ const (
 var Version = fmt.Sprintf("%d.%d", VersionMajor, VersionMinor)
 
 func main() {
-	file, err := os.Create("perf.az")
-	if err != nil {
-		panic(err)
-	}
-	if err := pprof.StartCPUProfile(file); err != nil {
-		panic(err)
-	}
-	defer pprof.StopCPUProfile()
-
 	fmt.Printf("GoPy %s - (C) 2012 Florian Schlachter, Berlin\n\n", Version)
 
 	debug := flag.Bool("debug", false, "Enables debug mode")

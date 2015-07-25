@@ -1,11 +1,9 @@
 package vm
 
 import (
-	//"errors"
 	"fmt"
 	"io"
 	"time"
-	//"reflect"
 )
 
 const (
@@ -213,9 +211,9 @@ func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 
 				_, global_found := code.vm.runtime.mainframe.names[name]
 
-				// TODO CHECK: Not sure whether to give global or local priority 
+				// TODO CHECK: Not sure whether to give global or local priority
 				if global_found {
-					// Get global 
+					// Get global
 				} else {
 
 				}
@@ -233,9 +231,9 @@ func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 
 			_, global_found := code.vm.runtime.mainframe.names[name]
 
-			// TODO CHECK: Not sure whether to give global or local priority 
+			// TODO CHECK: Not sure whether to give global or local priority
 			if global_found {
-				// Set global 
+				// Set global
 			} else {
 
 			}
@@ -333,7 +331,7 @@ func (code *PyCode) eval(frame *PyFrame) (PyObject, error) {
 				// It's no built-in, determine value
 				value, global_found := code.vm.runtime.mainframe.names[name]
 
-				// TODO CHECK: Not sure whether to give global or local priority 
+				// TODO CHECK: Not sure whether to give global or local priority
 				if !global_found {
 					code.runtimeError(fmt.Sprintf("Could not find name (%v) in global namespace", name))
 				}
