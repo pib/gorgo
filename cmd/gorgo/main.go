@@ -16,7 +16,7 @@ const (
 var Version = fmt.Sprintf("%d.%d", VersionMajor, VersionMinor)
 
 func main() {
-	fmt.Printf("GoPy %s - (C) 2012 Florian Schlachter, Berlin\n\n", Version)
+	log.Printf("GoPy %s - (C) 2012 Florian Schlachter, Berlin\n\n", Version)
 
 	debug := flag.Bool("debug", false, "Enables debug mode")
 	filename := flag.String("filename", "", "Compiled python file (.pyc)")
